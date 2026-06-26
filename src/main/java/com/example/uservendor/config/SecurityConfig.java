@@ -57,7 +57,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Explicitly allow your Vite React frontend
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173",
+                "https://uvms-frontend.vercel.app", // Replace with your actual Vercel URL!
+                "*" // Or just use the wildcard to allow everything while you test
+        ));
         // Allow all standard HTTP methods, including the OPTIONS preflight
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // Allow the JWT Authorization header to pass through
