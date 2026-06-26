@@ -56,19 +56,23 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Explicitly allow your Vite React frontend
-        configuration.setAllowedOrigins(List.of("http://localhost:5173",
-                "https://uservendorfrontend.vercel.app", // Replace with your actual Vercel URL!
-                "*" // Or just use the wildcard to allow everything while you test
+
+        // 1. EXACT URLs ONLY. We must remove the "*" wildcard entirely!
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://uservendorfrontend.vercel.app"
         ));
-        // Allow all standard HTTP methods, including the OPTIONS preflight
+
+        // 2. Allow all standard HTTP methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Allow the JWT Authorization header to pass through
+
+        // 3. Allow the JWT Authorization header to pass through
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+
+        // 4. Allow credentials. (This is the line that makes the "*" wildcard illegal)
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this rule to all API endpoints
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
